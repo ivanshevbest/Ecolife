@@ -1,0 +1,2956 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoLife — платформа экологических привычек от Ивана Вахрушева</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== БАЗА ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f6faf5;
+            color: #1a2e20;
+            line-height: 1.5;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            overflow-x: hidden;
+        }
+   
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== РАЗМЫТЫЕ ФОНОВЫЕ ЭФФЕКТЫ (как у МТС) ===== */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+            background: #3ba35d;
+            animation: floatBlob 12s ease-in-out infinite;
+        }
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            left: -100px;
+            background: #1a4f28;
+            animation: floatBlob 15s ease-in-out infinite reverse;
+        }
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #5fc97c;
+            animation: floatBlob 10s ease-in-out infinite;
+            opacity: 0.08;
+        }
+
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-40px, 30px) scale(1.2); }
+        }
+
+        /* ===== ШАПКА (с блюром) ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            border-bottom: 1px solid rgba(30, 122, 68, 0.08);
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+            gap: 16px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+            position: sticky;
+            top: 5px;
+            z-index: 100;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #1a4f28, #3ba35d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 28px;
+            font-weight: 500;
+            font-size: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #2d4533;
+            transition: 0.3s;
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a4f28, #3ba35d);
+            transition: 0.3s;
+        }
+        .nav a:hover::after {
+            width: 100%;
+        }
+        .nav a:hover {
+            color: #1a4f28;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+            color: white !important;
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(26, 79, 40, 0.25);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            text-decoration: none !important;
+            display: inline-block;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(26, 79, 40, 0.35);
+        }
+
+        /* ===== ГЕРОЙ ===== */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 72px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+            color: #0e2a18;
+            margin-bottom: 20px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #1a4f28, #3ba35d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #40664b;
+            max-width: 480px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+        .hero .author-badge {
+            display: inline-block;
+            background: rgba(26, 79, 40, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 15px;
+            color: #1a4f28;
+            font-weight: 500;
+            margin-bottom: 24px;
+            border: 1px solid rgba(26, 79, 40, 0.1);
+        }
+        .hero .author-badge strong {
+            font-weight: 700;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .hero-stats div {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 16px 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            min-width: 100px;
+        }
+        .hero-stats strong {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1a4f28;
+            display: block;
+            line-height: 1.2;
+        }
+        .hero-stats span {
+            font-size: 14px;
+            color: #5d7a66;
+            font-weight: 500;
+        }
+
+        .hero-image {
+            background: linear-gradient(135deg, #d4e8d8, #e7f3e9);
+            border-radius: 40px;
+            height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            box-shadow: 0 20px 60px rgba(26, 79, 40, 0.08);
+            animation: float 6s ease-in-out infinite;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* ===== КНОПКА СОЗДАТЬ ПОСТ ===== */
+        .create-post-wrapper {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .create-post-btn {
+            background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 30px rgba(26, 79, 40, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        .create-post-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        .create-post-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 12px 40px rgba(26, 79, 40, 0.35);
+        }
+        .create-post-btn .icon {
+            margin-right: 12px;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ===== СЕКЦИЯ ЛАЙФХАКОВ ===== */
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0e2a18;
+        }
+        .section-sub {
+            font-size: 17px;
+            color: #4d6b56;
+            margin-bottom: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-bottom: 56px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 20px rgba(0, 20, 5, 0.04);
+            cursor: default;
+        }
+        .card:hover {
+            border-color: rgba(59, 163, 93, 0.3);
+            box-shadow: 0 12px 40px rgba(26, 79, 40, 0.08);
+            transform: translateY(-6px);
+        }
+
+        .card .tag {
+            display: inline-block;
+            background: rgba(26, 79, 40, 0.08);
+            color: #1a5f2e;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 40px;
+            margin-bottom: 14px;
+            backdrop-filter: blur(10px);
+        }
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #143d20;
+        }
+        .card p {
+            color: #2f4d38;
+            margin-bottom: 18px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .card .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #5f7a66;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            padding-top: 16px;
+        }
+        .card .meta span {
+            background: rgba(0, 0, 0, 0.03);
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #1a4f28;
+        }
+
+        /* ===== ЧАТ ===== */
+        .chat-section {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 40px;
+            padding: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 56px;
+            box-shadow: 0 8px 40px rgba(0, 20, 5, 0.04);
+            transition: 0.3s;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .chat-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0e2a18;
+        }
+        .chat-header .online-badge {
+            background: rgba(26, 79, 40, 0.08);
+            backdrop-filter: blur(10px);
+            color: #1a4f28;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .online-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #2b8c4a;
+            border-radius: 50%;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #5d7a66;
+        }
+        .empty-state .emoji-big {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 16px;
+        }
+        .empty-state h3 {
+            font-size: 20px;
+            color: #1a4f28;
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            font-size: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .message {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 18px 24px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #3ba35d;
+            animation: slideIn 0.4s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message strong {
+            color: #143d20;
+            font-weight: 700;
+        }
+        .message .time {
+            font-size: 13px;
+            color: #7b9682;
+            margin-left: 12px;
+            font-weight: 400;
+        }
+        .message p {
+            margin-top: 4px;
+            color: #2a4531;
+            line-height: 1.5;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: 60px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            outline: none;
+            transition: 0.3s;
+        }
+        .chat-input input:focus {
+            border-color: #1a4f28;
+            box-shadow: 0 0 0 4px rgba(26, 79, 40, 0.06);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .chat-input button {
+            background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0 36px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(26, 79, 40, 0.2);
+        }
+        .chat-input button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(26, 79, 40, 0.3);
+        }
+
+        /* ===== ПРОМО-БЛОК ===== */
+        .promo-block {
+            background: linear-gradient(135deg, #1a4f28, #0e3a1e);
+            border-radius: 40px;
+            padding: 48px 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-bottom: 56px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .promo-block::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 163, 93, 0.15), transparent 70%);
+            border-radius: 50%;
+            animation: floatBlob 10s ease-in-out infinite;
+        }
+        .promo-block .text {
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+        .promo-block h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .promo-block p {
+            font-size: 17px;
+            opacity: 0.85;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .promo-block .code-block {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 12px 0 16px;
+            font-family: 'Inter', monospace;
+        }
+        .promo-block .btn-white {
+            background: white;
+            color: #1a4f28;
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .promo-block .btn-white::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+            transition: 0.5s;
+        }
+        .promo-block .btn-white:hover::before {
+            left: 100%;
+        }
+        .promo-block .btn-white:hover {
+            transform: scale(1.04);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        .promo-block .emoji-big {
+            font-size: 72px;
+            line-height: 1;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== БЛОК ОБ АВТОРЕ ===== */
+        .author-block {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px 48px;
+            margin-bottom: 56px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+            box-shadow: 0 8px 40px rgba(0, 20, 5, 0.04);
+        }
+        .author-block .info {
+            max-width: 700px;
+        }
+        .author-block h3 {
+            font-size: 24px;
+            color: #1a4f28;
+            margin-bottom: 8px;
+        }
+        .author-block p {
+            color: #40664b;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .author-block .vk-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(26, 79, 40, 0.2);
+        }
+        .author-block .vk-link:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 30px rgba(26, 79, 40, 0.3);
+        }
+        .author-block .avatar {
+            font-size: 64px;
+            line-height: 1;
+            background: linear-gradient(135deg, #d4e8d8, #e7f3e9);
+            padding: 16px;
+            border-radius: 50%;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 32px 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 15px;
+            color: #4d6b56;
+        }
+        .footer a {
+            color: #1a4f28;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 24px;
+            transition: 0.3s;
+        }
+        .footer a:hover {
+            color: #0e3a1e;
+            text-decoration: underline;
+        }
+
+        /* ===== МОДАЛКА СОЗДАНИЯ ПОСТА ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 40px;
+            max-width: 540px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal h3 {
+            font-size: 24px;
+            color: #0e2a18;
+            margin-bottom: 8px;
+        }
+        .modal .desc {
+            color: #5d7a66;
+            font-size: 15px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .modal textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            resize: vertical;
+            min-height: 120px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .modal textarea:focus {
+            border-color: #1a4f28;
+            box-shadow: 0 0 0 4px rgba(26, 79, 40, 0.06);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .modal .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        .modal .modal-actions button {
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+        .modal .modal-actions .btn-cancel {
+            background: rgba(0, 0, 0, 0.04);
+            color: #4d6b56;
+        }
+        .modal .modal-actions .btn-cancel:hover {
+            background: rgba(0, 0, 0, 0.08);
+        }
+        .modal .modal-actions .btn-submit {
+            background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(26, 79, 40, 0.2);
+        }
+        .modal .modal-actions .btn-submit:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 30px rgba(26, 79, 40, 0.3);
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 960px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .hero h1 {
+                font-size: 38px;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .chat-section {
+                padding: 28px;
+            }
+            .promo-block {
+                padding: 32px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .promo-block .code-block {
+                font-size: 16px;
+                padding: 6px 16px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 12px;
+                padding: 14px 20px;
+                border-radius: 32px;
+                top: 8px;
+            }
+            .nav {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-stats div {
+                min-width: 80px;
+                padding: 12px 16px;
+                text-align: center;
+            }
+            .hero-stats strong {
+                font-size: 24px;
+            }
+            .author-block {
+                padding: 28px;
+                text-align: center;
+                justify-content: center;
+            }
+            .author-block .info {
+                text-align: center;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer a {
+                margin: 0 12px;
+            }
+            .modal {
+                padding: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== РАЗМЫТЫЕ ФОНОВЫЕ БЛОБЫ ===== -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="container">
+
+       
+<!-- ===== ШАПКА ===== -->
+<header class="header">
+    <a href="#" class="logo">🌱 Eco<span>Life</span></a>
+    <div class="nav">
+        <a href="#">Лайфхаки</a>
+        <a href="#">Сообщество</a>
+        <a href="#author">Об авторе</a>
+        <a href="https://ivanshevbest.github.io/The-book-Green-Trace-for-download/Зелёный%20след.docx" target="_blank" class="btn-primary">Скачать книгу</a>
+    </div>
+
+<style>
+    .create-post-btn-header {
+        background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 60px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(26, 79, 40, 0.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .create-post-btn-header:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(26, 79, 40, 0.3);
+    }
+    @media (max-width: 680px) {
+        .create-post-btn-header {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+        }
+    }
+</style>
+<div class="eco-coin-display" onclick="showCoinsInfo()">
+    <span class="coin-icon">♻️</span>
+    <span class="coin-count" id="coinCount">0</span>
+</div>
+
+<style>
+    .eco-coin-display {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 215, 0, 0.1);
+        padding: 8px 16px 8px 12px;
+        border-radius: 60px;
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        font-weight: 600;
+        color: #b8860b;
+        font-size: 14px;
+        transition: 0.3s;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .eco-coin-display:hover {
+        transform: scale(1.05);
+        background: rgba(255, 215, 0, 0.15);
+    }
+    .coin-icon {
+        font-size: 17px;
+    }
+    .coin-count {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a4f28;
+    }
+    @media (max-width: 680px) {
+        .eco-coin-display {
+            font-size: 13px;
+            padding: 6px 14px 6px 10px;
+        }
+        .coin-count {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<script>
+    function showCoinsInfo() {
+        const coins = parseInt(document.getElementById('coinCount').textContent) || 0;
+        alert(`♻️ Ваш баланс: ${coins} монет\n\nЗарабатывайте монеты, проходя Эко уроки!\nКаждый урок даёт +30 ♻️`);
+    }
+</script>
+        </header>
+
+        <!-- ===== ГЕРОЙ ===== -->
+        <section class="hero">
+            <div>
+                <div class="author-badge">
+                Платформа Экологических советов от <i>Ивана Вахрушева</i>
+                </div>
+                <h1>Экологические привычки <br><span>с пользой для планеты</span></h1>
+                <p>Делитесь лайфхаками, экологическими историями и вдохновляйте других на осознанную жизнь.</p>
+                <div class="hero-stats">
+                    <div>
+                        <strong><span class="count-up" id="lifesCount">0</span></strong>
+                        <span>лайфхаков</span>
+                    </div>
+                    <div>
+                        <strong><span class="count-up" id="usersCount">10</span></strong>
+                        <span>участников</span>
+                    </div>
+                </div>
+            </div>
+           <div class="hero-image">
+    <img 
+        src="https://avatars.mds.yandex.net/get-shedevrum/12161431/img_95ea20ba160e11efa92bfa7fc26ab68e/orig" 
+        alt="Экология и природа" 
+        class="hero-img"
+        onerror="this.style.display='none'; this.parentElement.innerHTML='🌍'"
+    />
+</div>
+
+<style>
+    .hero-image {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #d4e8d8, #e7f3e9);
+        border-radius: 40px;
+        height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 60px rgba(26, 79, 40, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 40px;
+        transition: transform 0.5s ease;
+    }
+    .hero-img:hover {
+        transform: scale(1.02);
+    }
+</style>
+        </section>
+
+        <!-- ===== КНОПКА СОЗДАТЬ ПОСТ ===== -->
+        <div class="create-post-wrapper">
+            <button class="create-post-btn" id="openModalBtn">
+                <span class="icon">✍️</span> Создать пост
+            </button>
+            <p style="margin-top: 12px; color: #5d7a66; font-size: 15px;">
+                Поделитесь лайфхаком, экологической историей или расскажите, как внедрили экологию в свою жизнь
+            </p>
+        </div>
+
+        <!-- ===== ЛАЙФХАКИ ===== -->
+        <h2 class="section-title">🌿 Лайфхаки и истории</h2>
+        <p class="section-sub">Что уже делают участники сообщества</p>
+
+        <div class="grid-3" id="lifesContainer">
+            <!-- Сюда JS добавит карточки -->
+        </div>
+
+        <!-- ===== ЧАТ ===== -->
+        <section class="chat-section">
+            <div class="chat-header">
+                <h2>💬 Эко-чат</h2>
+                <span class="online-badge">
+                    <span class="online-dot"></span>
+                    <span id="onlineCount">1</span> онлайн
+                </span>
+            </div>
+
+            <div id="chatMessages" class="empty-state">
+                <span class="emoji-big">🌱</span>
+                <h3>Пока здесь пусто</h3> 
+                <p>Оставьте свою историю или эко-лайфхак первым! Вдохновите сообщество.</p>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Напишите свою историю или совет..." />
+                <button id="sendBtn">Отправить</button>
+            </div>
+        </section>
+
+        <!-- ===== ПРОМО-БЛОК ECOPLATFORM ===== -->
+        <div class="promo-block">
+            <div class="text">
+                <h2>Ecoplatform</h2>
+                <p>Сдавайте бутылки и банки в фандоматы, получайте баллы и меняйте их на скидки от партнёров.</p>
+                <div class="code-block">🎁 Промокод: GY0824K</div>
+                <p style="font-size: 14px; opacity: 0.7;">При скачивании введите этот код — получите приветственные бонусы!</p>
+                <a href="https://bonus.ecoplatform.ru/app" target="_blank" class="btn-white">🚀 Скачать Ecoplatform</a>
+            </div>
+            <div class="emoji-big">
+                ♻️
+            </div>
+        </div>
+        <!-- ===== ЭКО УРОКИ ===== -->
+<section class="eco-lessons">
+    <div class="section-header">
+        <div>
+            <h2 class="section-title">📚 Эко уроки</h2>
+            <p class="section-sub">Изучай экологию, проходи тесты и зарабатывай ♻️ монетки!</p>
+        </div>
+        <div class="lessons-stats">
+            <span>🏆 Всего монет: <strong id="totalCoinsDisplay">0</strong> ♻️</span>
+        </div>
+    </div>
+
+    <div class="lessons-grid" id="lessonsContainer">
+        <!-- Уроки будут добавлены через JS -->
+    </div>
+</section>
+
+<style>
+    .eco-lessons {
+        margin-bottom: 56px;
+    }
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+    .lessons-stats {
+        background: rgba(255, 215, 0, 0.08);
+        padding: 10px 20px;
+        border-radius: 40px;
+        font-size: 15px;
+        color: #5d7a66;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+    .lessons-stats strong {
+        color: #1a4f28;
+        font-size: 20px;
+    }
+
+    .lessons-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+    }
+
+    .lesson-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border-radius: 28px;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 4px 20px rgba(0, 20, 5, 0.04);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .lesson-card:hover {
+        border-color: rgba(59, 163, 93, 0.3);
+        box-shadow: 0 12px 40px rgba(26, 79, 40, 0.08);
+        transform: translateY(-6px);
+    }
+    .lesson-card .lesson-icon {
+        font-size: 40px;
+        display: block;
+        margin-bottom: 12px;
+    }
+    .lesson-card .lesson-tag {
+        display: inline-block;
+        background: rgba(26, 79, 40, 0.08);
+        color: #1a5f2e;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 2px 14px;
+        border-radius: 40px;
+        margin-bottom: 10px;
+    }
+    .lesson-card h3 {
+        font-size: 20px;
+        color: #143d20;
+        margin-bottom: 8px;
+    }
+    .lesson-card p {
+        color: #2f4d38;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+    .lesson-card .lesson-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: #5f7a66;
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        padding-top: 14px;
+    }
+    .lesson-card .lesson-meta .reward {
+        background: rgba(255, 215, 0, 0.12);
+        padding: 4px 14px;
+        border-radius: 30px;
+        font-weight: 600;
+        color: #b8860b;
+    }
+    .lesson-card .lesson-meta .status {
+        padding: 4px 14px;
+        border-radius: 30px;
+        font-weight: 500;
+    }
+    .lesson-card .lesson-meta .status.completed {
+        background: rgba(26, 79, 40, 0.08);
+        color: #1a4f28;
+    }
+    .lesson-card .lesson-meta .status.pending {
+        background: rgba(255, 165, 0, 0.08);
+        color: #cc7a00;
+    }
+
+    @media (max-width: 960px) {
+        .lessons-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    @media (max-width: 680px) {
+        .lessons-grid {
+            grid-template-columns: 1fr;
+        }
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<!-- ===== МОДАЛКА УРОКА ===== -->
+<div class="modal-overlay" id="lessonModal">
+    <div class="modal modal-lesson">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <h3 id="lessonModalTitle">📚 Название урока</h3>
+            <button onclick="closeLessonModal()" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #7b9682; line-height: 1;">×</button>
+        </div>
+        
+        <div id="lessonContent">
+            <div id="lessonTheory" style="margin-bottom: 20px;">
+                <p style="color: #2f4d38; line-height: 1.8; font-size: 15px;" id="lessonText">Загрузка...</p>
+            </div>
+            
+            <div id="lessonTest" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.06);">
+                <h4 style="color: #143d20; margin-bottom: 16px;">✅ Проверь свои знания</h4>
+                <div id="testQuestions"></div>
+                <button onclick="submitTest()" class="btn-primary" style="margin-top: 20px; width: 100%; padding: 14px; font-size: 16px;">
+                    🎯 Отправить ответы
+                </button>
+            </div>
+        </div>
+
+        <div id="testResult" style="display: none; text-align: center; padding: 20px 0;">
+            <div style="font-size: 48px; margin-bottom: 12px;" id="resultEmoji">🎉</div>
+            <h3 style="color: #143d20; margin-bottom: 8px;" id="resultTitle">Отлично!</h3>
+            <p style="color: #4d6b56; font-size: 15px;" id="resultText">Вы набрали X из Y баллов</p>
+            <div style="margin-top: 16px; background: rgba(255, 215, 0, 0.08); padding: 12px; border-radius: 16px; display: inline-block;">
+                <span style="font-size: 24px;">♻️ +<span id="resultCoins">30</span> монет</span>
+            </div>
+            <button onclick="closeLessonModal()" class="btn-primary" style="margin-top: 20px;">Продолжить</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-lesson {
+        max-width: 620px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .modal-lesson .test-option {
+        display: block;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        border: 2px solid rgba(0, 0, 0, 0.04);
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 15px;
+        color: #1a2e20;
+    }
+    .modal-lesson .test-option:hover {
+        border-color: rgba(26, 79, 40, 0.2);
+        background: rgba(26, 79, 40, 0.02);
+    }
+    .modal-lesson .test-option.selected {
+        border-color: #1a4f28;
+        background: rgba(26, 79, 40, 0.06);
+    }
+    .modal-lesson .test-option.correct {
+        border-color: #27ae60;
+        background: rgba(39, 174, 96, 0.08);
+    }
+    .modal-lesson .test-option.wrong {
+        border-color: #e74c3c;
+        background: rgba(231, 76, 60, 0.08);
+    }
+    .modal-lesson .question-number {
+        font-weight: 600;
+        color: #1a4f28;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    .modal-lesson .question-text {
+        font-size: 16px;
+        font-weight: 500;
+        color: #0e2a18;
+        margin-bottom: 12px;
+    }
+</style>
+
+<script>
+    // ============================================================
+    // ЭКО УРОКИ
+    // ============================================================
+    let ecoCoins = 0;
+    let completedLessons = [];
+
+    const lessonsData = [
+        
+        
+        
+        {
+            id: 1,
+            icon: '♻️',
+            title: 'Маркировка пластика',
+            tag: '📖 Основы',
+            description: 'Узнайте, что означают цифры в треугольнике на пластиковых изделиях и как правильно сортировать отходы.',
+            theory: `
+                <strong>📌 Что такое маркировка пластика?</strong><br><br>
+                На каждом пластиковом изделии есть значок в виде треугольника из стрелок с цифрой внутри. 
+                Эта цифра (от 1 до 7) указывает на тип пластика и его пригодность для переработки.<br><br>
+                
+                <strong>🔢 Расшифровка:</strong><br>
+                • <strong>♻️ 1 (PET)</strong> — бутылки для воды, газировки. Перерабатывается, но не более 1-2 раз.<br>
+                • <strong>♻️ 2 (HDPE)</strong> — флаконы для шампуней, моющих средств. Безопасен, перерабатывается.<br>
+                • <strong>♻️ 3 (PVC)</strong> — трубы, плёнка. Опасен при нагревании, почти не перерабатывается.<br>
+                • <strong>♻️ 4 (LDPE)</strong> — пакеты, плёнка. Перерабатывается, но сложно.<br>
+                • <strong>♻️ 5 (PP)</strong> — контейнеры для еды, крышки. Безопасен, перерабатывается.<br>
+                • <strong>♻️ 6 (PS)</strong> — стаканчики для кофе, пенопласт. Перерабатывается редко.<br>
+                • <strong>♻️ 7 (OTHER)</strong> — смесь пластиков, практически не перерабатывается.<br><br>
+                
+                <strong>💡 Совет:</strong> Старайтесь выбирать изделия с маркировкой 1, 2, 5 — они лучше всего поддаются переработке!
+            `,
+            questions: [
+                {
+                    question: 'Какой пластик обозначается цифрой 1?',
+                    options: ['PET (бутылки)', 'HDPE (флаконы)', 'PVC (трубы)', 'PP (контейнеры)'],
+                    correct: 0
+                },
+                {
+                    question: 'Какой пластик считается самым безопасным для многоразового использования?',
+                    options: ['PVC (3)', 'PS (6)', 'PP (5)', 'OTHER (7)'],
+                    correct: 2
+                },
+                {
+                    question: 'Какой пластик практически не перерабатывается?',
+                    options: ['PET (1)', 'HDPE (2)', 'PP (5)', 'OTHER (7)'],
+                    correct: 3
+                }
+            ],
+            reward: 30
+        },
+        {
+            id: 2,
+            icon: '🌍',
+            title: 'Экологические привычки',
+            tag: '🌿 Советы',
+            description: 'Как внедрить экологию в повседневную жизнь: от сортировки до энергосбережения.',
+            theory: `
+                <strong>🌱 Простые эко-привычки для каждого:</strong><br><br>
+                
+                <strong>1. Многоразовая бутылка</strong><br>
+                Замените одноразовые пластиковые бутылки на многоразовую — это сэкономит до 100 пластиковых бутылок в год!<br><br>
+                
+                <strong>2. Энергосберегающие лампы</strong><br>
+                LED-лампы потребляют на 80% меньше энергии и служат в 10 раз дольше обычных.<br><br>
+                
+                <strong>3. Сортировка мусора</strong><br>
+                Разделяйте пластик, стекло, бумагу и органику. Это помогает перерабатывать до 80% отходов.<br><br>
+                
+                <strong>4. Сумка вместо пакета</strong><br>
+                Одна тканевая сумка заменяет до 1000 пластиковых пакетов за 5 лет!<br><br>
+                
+                <strong>5. Вода без лишнего</strong><br>
+                Закрывайте кран, пока чистите зубы — это экономит до 15 литров воды в день.<br><br>
+                
+                <strong>💡 Начните с одной привычки!</strong> Выберите самую простую и внедряйте её в течение месяца.
+            `,
+            questions: [ 
+                {
+                    question: 'Сколько пластиковых бутылок можно заменить одной многоразовой бутылкой в год?',
+                    options: ['~30', '~50', '~100', '~200'],
+                    correct: 2
+                },
+                {
+                    question: 'На сколько процентов LED-лампы экономят энергию по сравнению с обычными?',
+                    options: ['20%', '40%', '60%', '80%'],
+                    correct: 3
+                },
+                {
+                    question: 'Сколько пластиковых пакетов заменяет одна тканевая сумка за 5 лет?',
+                    options: ['~100', '~500', '~1000', '~2000'],
+                    correct: 2
+                }
+            ],
+            reward: 30
+        },
+        {
+            id: 3,
+            icon: '🌊',
+            title: 'Переработка и экология',
+            tag: '♻️ Практика',
+            description: 'Что происходит с отходами после того, как мы их выбрасываем? Путь от мусора до нового продукта.',
+            theory: `
+                <strong>♻️ Как работает переработка:</strong><br><br>
+                
+                <strong>Шаг 1: Сортировка</strong><br>
+                Отходы сортируют вручную и автоматически — отделяют пластик, стекло, бумагу, металл.<br><br>
+                
+                <strong>Шаг 2: Очистка</strong><br>
+                Материалы моют и очищают от загрязнений, удаляют этикетки и крышки.<br><br>
+                
+                <strong>Шаг 3: Измельчение</strong><br>
+                Сырьё дробят на мелкие частицы (флексы) для дальнейшей переработки.<br><br>
+                
+                <strong>Шаг 4: Плавка и формовка</strong><br>
+                Измельчённый пластик плавят и формуют в новые изделия — бутылки, контейнеры, одежду.<br><br>
+                
+                <strong>Шаг 5: Новая жизнь</strong><br>
+                Из переработанного пластика делают: <br>
+                • 10 бутылок = 1 футболка<br>
+                • 25 бутылок = 1 куртка<br>
+                • 100 бутылок = 1 ковёр<br><br>
+                
+                <strong>📊 Факт:</strong> Переработка одной тонны пластика экономит ~5 тонн CO₂ выбросов!
+            `,
+            questions: [
+                {
+                    question: 'Сколько пластиковых бутылок нужно для изготовления одной футболки?',
+                    options: ['5', '10', '25', '50'],
+                    correct: 1
+                },
+                {
+                    question: 'Что делают с пластиком на этапе измельчения?',
+                    options: ['Моют', 'Дробят на флексы', 'Плавят', 'Сортирут'],
+                    correct: 1
+                },
+                {
+                    question: 'Сколько тонн CO₂ экономит переработка 1 тонны пластика?',
+                    options: ['1 тонну', '3 тонны', '5 тонн', '10 тонн'],
+                    correct: 2
+                }
+            ],
+            reward: 30
+        }
+    ];
+
+    function renderLessons() {
+        const container = document.getElementById('lessonsContainer');
+        const totalCoinsDisplay = document.getElementById('totalCoinsDisplay');
+        if (!container) return;
+        
+        container.innerHTML = lessonsData.map(lesson => {
+            const isCompleted = completedLessons.includes(lesson.id);
+            return `
+                <div class="lesson-card" onclick="openLesson(${lesson.id})">
+                    <span class="lesson-icon">${lesson.icon}</span>
+                    <span class="lesson-tag">${lesson.tag}</span>
+                    <h3>${lesson.title}</h3>
+                    <p>${lesson.description}</p>
+                    <div class="lesson-meta">
+                        <span class="reward">♻️ +${lesson.reward} монет</span>
+                        <span class="status ${isCompleted ? 'completed' : 'pending'}">
+                            ${isCompleted ? '✅ Пройдено' : '📖 Начать'}
+                        </span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        if (totalCoinsDisplay) totalCoinsDisplay.textContent = ecoCoins;
+        const coinCount = document.getElementById('coinCount');
+        if (coinCount) coinCount.textContent = ecoCoins;
+    }
+
+    let currentLessonId = null;
+    let selectedAnswers = {};
+
+    function openLesson(id) {
+        const lesson = lessonsData.find(l => l.id === id);
+        if (!lesson) return;
+        
+        currentLessonId = id;
+        selectedAnswers = {};
+        const isCompleted = completedLessons.includes(id);
+        
+        const titleEl = document.getElementById('lessonModalTitle');
+        const textEl = document.getElementById('lessonText');
+        if (titleEl) titleEl.textContent = `${lesson.icon} ${lesson.title}`;
+        if (textEl) textEl.innerHTML = lesson.theory;
+        
+        const testBlock = document.getElementById('lessonTest');
+        const resultBlock = document.getElementById('testResult');
+        
+        if (isCompleted) {
+            if (testBlock) testBlock.style.display = 'none';
+            if (resultBlock) {
+                resultBlock.style.display = 'block';
+                document.getElementById('resultEmoji').textContent = '✅';
+                document.getElementById('resultTitle').textContent = 'Урок уже пройден!';
+                document.getElementById('resultText').textContent = 'Вы получили монеты за этот урок.';
+                document.getElementById('resultCoins').textContent = '0';
+            }
+        } else {
+            if (testBlock) testBlock.style.display = 'block';
+            if (resultBlock) resultBlock.style.display = 'none';
+            
+            const questionsContainer = document.getElementById('testQuestions');
+            if (questionsContainer) {
+                questionsContainer.innerHTML = lesson.questions.map((q, index) => `
+                    <div style="margin-bottom: 20px;">
+                        <div class="question-number">Вопрос ${index + 1} из ${lesson.questions.length}</div>
+                        <div class="question-text">${q.question}</div>
+                        ${q.options.map((opt, optIndex) => `
+                            <label class="test-option" onclick="selectOption(${index}, ${optIndex})" id="option-${index}-${optIndex}">
+                                ${String.fromCharCode(65 + optIndex)}) ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                `).join('');
+            }
+        }
+        
+        const modal = document.getElementById('lessonModal');
+        if (modal) modal.classList.add('active');
+    }
+
+    function selectOption(questionIndex, optionIndex) {
+        selectedAnswers[questionIndex] = optionIndex;
+        
+        document.querySelectorAll(`#testQuestions .test-option`).forEach(el => {
+            el.classList.remove('selected');
+        });
+        const el = document.getElementById(`option-${questionIndex}-${optionIndex}`);
+        if (el) el.classList.add('selected');
+    }
+
+    function submitTest() {
+        const lesson = lessonsData.find(l => l.id === currentLessonId);
+        if (!lesson) return;
+        
+        let correct = 0;
+        const total = lesson.questions.length;
+        
+        lesson.questions.forEach((q, index) => {
+            const selected = selectedAnswers[index];
+            const isCorrect = selected === q.correct;
+            if (isCorrect) correct++;
+            
+            q.options.forEach((opt, optIndex) => {
+                const el = document.getElementById(`option-${index}-${optIndex}`);
+                if (el) {
+                    el.classList.remove('selected');
+                    if (optIndex === q.correct) {
+                        el.classList.add('correct');
+                    } else if (optIndex === selected && !isCorrect) {
+                        el.classList.add('wrong');
+                    }
+                }
+            });
+        });
+        
+        const btn = document.querySelector('#lessonTest .btn-primary');
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = '⏳ Проверка...';
+        }
+        
+        setTimeout(() => {
+            const passed = correct >= total * 0.7;
+            
+            const testBlock = document.getElementById('lessonTest');
+            const resultBlock = document.getElementById('testResult');
+            if (testBlock) testBlock.style.display = 'none';
+            if (resultBlock) resultBlock.style.display = 'block';
+            
+            if (passed) {
+                ecoCoins += lesson.reward;
+                if (!completedLessons.includes(currentLessonId)) {
+                    completedLessons.push(currentLessonId);
+                }
+                renderLessons();
+                
+                document.getElementById('resultEmoji').textContent = '🎉';
+                document.getElementById('resultTitle').textContent = 'Урок пройден!';
+                document.getElementById('resultText').textContent = `Вы набрали ${correct} из ${total} баллов. Отлично!`;
+                document.getElementById('resultCoins').textContent = lesson.reward;
+            } else {
+                document.getElementById('resultEmoji').textContent = '📖';
+                document.getElementById('resultTitle').textContent = 'Попробуйте снова';
+                document.getElementById('resultText').textContent = `Вы набрали ${correct} из ${total} баллов. Нужно ${Math.ceil(total * 0.7)} для прохождения.`;
+                document.getElementById('resultCoins').textContent = '0';
+            }
+        }, 1500);
+    }
+
+    function closeLessonModal() {
+        const modal = document.getElementById('lessonModal');
+        if (modal) modal.classList.remove('active');
+        const resultBlock = document.getElementById('testResult');
+        const testBlock = document.getElementById('lessonTest');
+        if (resultBlock) resultBlock.style.display = 'none';
+        if (testBlock) testBlock.style.display = 'block';
+        const btn = document.querySelector('#lessonTest .btn-primary');
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '🎯 Отправить ответы';
+        }
+    }
+
+    document.getElementById('lessonModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeLessonModal();
+    });
+
+    // Инициализация
+    renderLessons();
+</script>
+<!-- ===== БЛОК О КНИГЕ ===== -->
+<section class="book-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="title">«Зелёный след» — история одного эко-подвижничества</h2>
+            <p class="subtitle">Вдохновляющая история о том, как один человек начал менять мир к лучшему</p>
+        </div>
+
+        <div class="book-content">
+            <div class="book-cover">
+                <img src="https://sun9-54.vkuserphoto.ru/s/v1/ig2/jJIsEz5LUdoB7s5uEnZo0Rfm4ZdRA3x1HXbfuvlLP5G27VHT6494n0GWRyLYNmoNSoP4EbCoWQ4kJfDvuQxm7u0v.jpg?quality=95&as=32x44,48x66,72x99,108x149,160x221,240x332,360x497,464x641&from=bu&u=zKcS9VwOhryLiPy8IZAcKZLyqsvdxY_4lUwY8ueTA98&cs=464x0" alt="Обложка книги 'Зелёный след'" class="book-image">
+            </div>
+
+            <div class="book-description">
+                <p>В центре повествования — история молодого учителя литературы Артёма, который начинает борьбу за экологию своего города. Через призму его личного опыта автор раскрывает важные экологические проблемы и показывает, как один человек может изменить ситуацию к лучшему.</p>
+
+                <p>Книга сочетает в себе:</p>
+                <ul>
+                    <li>Реальную историю преображения городского пространства</li>
+                    <li>Практические советы по внедрению эко-привычек</li>
+                    <li>Вдохновляющий пример гражданской активности</li>
+                </ul>
+
+                <p>В книге вы найдёте:</p>
+                <ul>
+                    <li>Путь главного героя от простого учителя до экологического активиста</li>
+                    <li>Практические шаги по организации раздельного сбора мусора</li>
+                    <li>Истории преодоления бюрократических преград</li>
+                    <li>Примеры успешного внедрения экологических инициатив</li>
+                </ul>
+            </div>
+
+            <div class="book-features">
+                <h3>Почему стоит прочитать эту книгу?</h3>
+                <p>Это не просто история об экологии — это вдохновляющий рассказ о том, как один человек может изменить мир вокруг себя. Книга наполнена реальными примерами, практическими советами и глубоким пониманием экологических проблем.</p>
+            </div>
+
+            <div class="book-preview">
+                <h3>О книге</h3>
+                <p>Что будет, если обычный учитель литературы из маленького городка вдруг решит изменить мир?</p>
+                <p>Нет, он не пойдёт в политику. Он не станет писать законы. Он просто поставит во дворе четыре бака.</p>
+                <p>А дальше...</p>
+                <p>Что произойдёт, когда соседи увидят эти баки? Кто скажет «молодец», а кто — «убери это»? Что ответит администрация? И почему вдруг вся страна узнает имя Артёма Захарова?</p>
+                <p>Как картофельные очистки оказались в баке для пластика? Кто принёс во двор старый люк? И почему этот люк станет символом целого движения?</p>
+                <p>Вы узнаете, как смех может быть сильнее бюрократии. Как один человек может повести за собой других. И как вывезти из своего двора не только мусор, но и собственные страхи.</p>
+                <p>А что произойдёт дальше — мы с Вами сейчас узнаем.</p>
+                <p class="book-tagline">«Зелёный след». Остро-социальная повесть о том, как маленькие шаги меняют мир!</p>
+                <p class="book-cta">Стало интересно? Скачайте книгу и узнайте, что будет дальше ↓</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="https://ivanshevbest.github.io/The-book-Green-Trace-for-download/Зелёный%20след.docx" class="btn btn-primary" data-action="download" download>
+                    <i class="icon-download"></i> Скачать книгу
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Стили для блока -->
+<style>
+.book-section {
+    background: #f9f9f9;
+    padding: 80px 0;
+    position: relative;
+}
+
+.book-section .section-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.book-section .title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0e2a18;
+    margin-bottom: 8px;
+}
+
+.book-section .subtitle {
+    font-size: 17px;
+    color: #4d6b56;
+}
+
+.book-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.book-cover {
+    width: 300px;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.book-image {
+    width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.book-description {
+    flex: 1;
+    min-width: 300px;
+}
+
+.book-description p {
+    color: #2f4d38;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.book-description ul {
+    margin: 8px 0 20px 20px;
+    color: #2f4d38;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.book-features {
+    width: 100%;
+    margin-top: 16px;
+    padding: 28px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.book-features h3 {
+    font-size: 22px;
+    color: #143d20;
+    margin-bottom: 12px;
+}
+
+.book-features p {
+    color: #2f4d38;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.book-preview {
+    width: 100%;
+    margin-top: 32px;
+    padding: 32px;
+    background: rgba(26, 79, 40, 0.04);
+    border-radius: 24px;
+    border: 1px solid rgba(26, 79, 40, 0.08);
+}
+
+.book-preview h3 {
+    font-size: 24px;
+    color: #143d20;
+    margin-bottom: 20px;
+}
+
+.book-preview p {
+    color: #2f4d38;
+    font-size: 16px;
+    line-height: 1.9;
+    margin-bottom: 14px;
+}
+
+.book-tagline {
+    font-weight: 700;
+    font-style: italic;
+    color: #1a4f28;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.book-cta {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a4f28;
+    margin-top: 24px;
+}
+
+.action-buttons {
+    width: 100%;
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    padding: 15px 40px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: 0.5s ease;
+    z-index: -1;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(26, 79, 40, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(26, 79, 40, 0.35);
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+@media (max-width: 680px) {
+    .book-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .book-cover {
+        margin: 0 auto;
+    }
+
+    .book-description {
+        width: 100%;
+    }
+
+    .book-section .title {
+        font-size: 26px;
+    }
+
+    .book-preview {
+        padding: 24px 20px;
+    }
+}
+</style>
+
+
+
+<!-- ===== КАРТА ПУНКТОВ ПРИЁМА ВТОРСЫРЬЯ ===== -->
+<section class="recycle-map-section">
+    <h2 class="section-title"> Пункты приёма вторсырья в Кирове</h2>
+    <p class="section-sub">Найдите ближайший пункт сдачи — отфильтруйте по типу вторсырья</p>
+
+    <!-- Фильтры -->
+    <div class="recycle-filters" id="recycleFilters">
+        <label class="filter-chip active" data-filter="all">
+            <input type="checkbox" checked>
+            <span>✅ Все</span>
+        </label>
+        <label class="filter-chip" data-filter="paper">
+            <input type="checkbox">
+            <span>📄 Макулатура</span>
+        </label>
+        <label class="filter-chip" data-filter="plastic">
+            <input type="checkbox">
+            <span>🥤 Пластик</span>
+        </label>
+        <label class="filter-chip" data-filter="glass">
+            <input type="checkbox">
+            <span>🍷 Стекло</span>
+        </label>
+        <label class="filter-chip" data-filter="blister">
+            <input type="checkbox">
+            <span>💊 Блистеры</span>
+        </label>
+        <label class="filter-chip" data-filter="metal">
+            <input type="checkbox">
+            <span>🔩 Металл</span>
+        </label>
+    </div>
+
+    <!-- Карта -->
+    <div class="map-wrapper">
+        <div id="recycleMap"></div>
+        <div class="map-legend">
+            <p>💡 Нажмите на фильтр, чтобы показать только нужные пункты. Кликните по метке, чтобы увидеть детали.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Стили для карты -->
+<style>
+.recycle-map-section {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 40px;
+    padding: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    margin-bottom: 56px;
+    box-shadow: 0 8px 40px rgba(0, 20, 5, 0.04);
+}
+
+.recycle-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(26, 79, 40, 0.1);
+    padding: 10px 20px;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 15px;
+    font-weight: 500;
+    color: #2d4533;
+    user-select: none;
+}
+
+.filter-chip:hover {
+    border-color: rgba(59, 163, 93, 0.4);
+    background: rgba(59, 163, 93, 0.05);
+    transform: translateY(-2px);
+}
+
+.filter-chip input {
+    display: none;
+}
+
+.filter-chip.active {
+    background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(26, 79, 40, 0.2);
+}
+
+.filter-chip.active span {
+    color: white;
+}
+
+.filter-chip.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.map-wrapper {
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(26, 79, 40, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 20, 5, 0.06);
+}
+
+#recycleMap {
+    width: 100%;
+    height: 500px;
+    z-index: 1;
+}
+
+.map-legend {
+    padding: 16px 24px;
+    background: rgba(26, 79, 40, 0.04);
+    font-size: 14px;
+    color: #5d7a66;
+}
+
+.map-legend p {
+    margin: 0;
+}
+
+/* Кастомные маркеры Leaflet */
+.recycle-popup .leaflet-popup-content-wrapper {
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(26, 79, 40, 0.1);
+}
+
+.recycle-popup .leaflet-popup-content {
+    margin: 16px 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.recycle-popup .popup-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a4f28;
+    margin-bottom: 6px;
+}
+
+.recycle-popup .popup-address {
+    font-size: 13px;
+    color: #5d7a66;
+    margin-bottom: 10px;
+}
+
+.recycle-popup .popup-materials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.recycle-popup .popup-material {
+    background: rgba(26, 79, 40, 0.08);
+    color: #1a5f2e;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 30px;
+}
+
+.recycle-popup .popup-hours {
+    font-size: 12px;
+    color: #7b9682;
+    margin-top: 8px;
+}
+
+.custom-marker {
+    background: linear-gradient(135deg, #1a4f28, #2b8c4a);
+    width: 28px;
+    height: 28px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: 3px solid white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-marker span {
+    transform: rotate(45deg);
+    font-size: 14px;
+    line-height: 1;
+}
+
+.custom-marker.paper { background: linear-gradient(135deg, #8B6914, #D4A017); }
+.custom-marker.plastic { background: linear-gradient(135deg, #2196F3, #64B5F6); }
+.custom-marker.glass { background: linear-gradient(135deg, #4CAF50, #81C784); }
+.custom-marker.blister { background: linear-gradient(135deg, #9C27B0, #BA68C8); }
+.custom-marker.metal { background: linear-gradient(135deg, #607D8B, #90A4AE); }
+.custom-marker.multi { background: linear-gradient(135deg, #1a4f28, #3ba35d); }
+
+@media (max-width: 680px) {
+    .recycle-map-section {
+        padding: 28px;
+        border-radius: 28px;
+    }
+    .recycle-filters {
+        gap: 8px;
+    }
+    .filter-chip {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    #recycleMap {
+        height: 350px;
+    }
+}
+</style>
+
+<!-- Leaflet JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ============================================================
+// КАРТА ПУНКТОВ ПРИЁМА ВТОРСЫРЬЯ КИРОВ
+// ============================================================
+
+// Данные пунктов приёма
+const recyclePoints = [
+    {
+        name: 'Экоцентр (Куприт)',
+        address: 'ул. Всесвятская, 64',
+        hours: 'Вт–Пт 10:00–19:00, Сб 10:00–18:00',
+        coords: [58.5876, 49.6280],
+        materials: ['paper', 'plastic', 'glass', 'blister', 'metal'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик', '🍷 Стекло', '💊 Блистеры', '🔩 Металл'],
+        icon: '🌍'
+    },
+    {
+        name: 'Экотек',
+        address: 'ул. Сормовская, 7 (склад)',
+        hours: 'Пн–Пт 8:00–16:30',
+        coords: [58.5670, 49.6470],
+        materials: ['paper', 'plastic', 'glass'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик (ПЭТ, ПНД)', '🍷 Стеклотара', '🎞️ Плёнка'],
+        icon: '♻️'
+    },
+    {
+        name: 'Экотек',
+        address: 'ул. Азина, 41/1',
+        hours: 'Пн и Сб 8:00–15:00',
+        coords: [58.5630, 49.6200],
+        materials: ['paper', 'plastic', 'glass'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик', '🍷 Стеклотара'],
+        icon: '♻️'
+    },
+    {
+        name: 'Экотек',
+        address: 'ул. Свердлова, 5',
+        hours: 'Пн–Пт 8:30–13:00',
+        coords: [58.6050, 49.6680],
+        materials: ['paper', 'plastic', 'glass'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик', '🍷 Стеклотара'],
+        icon: '♻️'
+    },
+    {
+        name: 'Экотек',
+        address: 'ул. Андрея Упита, 16/1',
+        hours: 'Ежедневно 8:00–15:00',
+        coords: [58.5870, 49.6380],
+        materials: ['paper', 'plastic', 'glass'],
+        materialLabels: ['📄 Макулатура', '🥤 ПЭТ-бутылки', '🍷 Стеклотара', '🎞️ Плёнка'],
+        icon: '♻️'
+    },
+    {
+        name: 'Экотек',
+        address: 'ул. Воровского, 135/3',
+        hours: 'Ежедневно 8:00–15:00',
+        coords: [58.5880, 49.6500],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '♻️'
+    },
+    {
+        name: 'Экотек',
+        address: 'ул. Торфяная, 4э (Озерки)',
+        hours: 'Сб 8:00–15:00',
+        coords: [58.5920, 49.5900],
+        materials: ['paper', 'plastic', 'glass'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик', '🍷 Стекло', '🥫 Алюм. банки'],
+        icon: '♻️'
+    },
+    {
+        name: 'Эковоз',
+        address: 'ул. Карла Маркса, 48т',
+        hours: 'Ежедневно 8:00–15:00',
+        coords: [58.5900, 49.5700],
+        materials: ['paper', 'plastic', 'glass'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик', '🍷 Стекло'],
+        icon: '♻️'
+    },
+    {
+        name: 'Эковоз',
+        address: 'ул. Казанская, 3т',
+        hours: 'Ежедневно 8:00–15:00',
+        coords: [58.5750, 49.6100],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Бумага', '🥤 Пластик'],
+        icon: '♻️'
+    },
+    {
+        name: 'Эковоз',
+        address: 'ул. Лепсе, 44',
+        hours: 'Ежедневно 8:00–15:00',
+        coords: [58.5700, 49.5800],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '♻️'
+    },
+    {
+        name: 'Эковоз',
+        address: 'ул. Риммы Юровской, 5',
+        hours: 'Ежедневно 8:00–15:00',
+        coords: [58.5750, 49.5900],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '♻️'
+    },
+    {
+        name: 'Пункт приёма стеклотары',
+        address: 'Октябрьский пр., 14Б/1',
+        hours: 'Ежедневно 8:00–20:00',
+        coords: [58.6050, 49.6550],
+        materials: ['glass', 'paper'],
+        materialLabels: ['🍷 Стеклотара', '📄 Макулатура'],
+        icon: '🍾'
+    },
+    {
+        name: 'Пункт приёма стеклотары',
+        address: 'ул. Чапаева, 38/1',
+        hours: 'Ежедневно 8:00–20:00',
+        coords: [58.5830, 49.6300],
+        materials: ['glass', 'paper'],
+        materialLabels: ['🍷 Стеклотара', '📄 Макулатура'],
+        icon: '🍾'
+    },
+    {
+        name: 'Пункт приёма макулатуры и стеклотары',
+        address: 'ул. Физкультурников, 16',
+        hours: 'Ежедневно',
+        coords: [58.5950, 49.6200],
+        materials: ['glass', 'paper'],
+        materialLabels: ['🍷 Стеклотара', '📄 Макулатура'],
+        icon: '🍾'
+    },
+    {
+        name: 'Контейнер (Greenway)',
+        address: 'Московская ул., 20',
+        hours: 'Круглосуточно',
+        coords: [58.6030, 49.6800],
+        materials: ['plastic', 'paper', 'glass'],
+        materialLabels: ['🥤 Пластик', '📄 Бумага', '🍷 Стекло'],
+        icon: '🗑️'
+    },
+    {
+        name: 'Экодом (Куприт)',
+        address: 'ул. Воровского, 135',
+        hours: 'Пн–Пт 10:00–19:00, Сб 10:00–18:00',
+        coords: [58.5881, 49.6495],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '🌱'
+    },
+    {
+        name: 'Куприт',
+        address: 'ул. Ленина, 198, корп. 2',
+        hours: 'Ежедневно',
+        coords: [58.5830, 49.6700],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '🌱'
+    },
+    {
+        name: 'Эко-соседи',
+        address: 'ул. Тургенева, 2',
+        hours: 'Ежедневно',
+        coords: [58.5980, 49.6600],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '🌿'
+    },
+    {
+        name: 'Эко-соседи',
+        address: 'ул. Ленина, 16',
+        hours: 'Ежедневно',
+        coords: [58.6060, 49.6680],
+        materials: ['paper', 'plastic'],
+        materialLabels: ['📄 Макулатура', '🥤 Пластик'],
+        icon: '🌿'
+    },
+    {
+        name: 'Вторсырье',
+        address: 'Базовый пер., 11А',
+        hours: 'Пн–Пт 7:00–18:00, Сб 8:00–17:00',
+        coords: [58.5900, 49.6300],
+        materials: ['paper'],
+        materialLabels: ['📄 Макулатура'],
+        icon: '📋'
+    },
+    {
+        name: 'Эковтор',
+        address: 'Луганская ул., 47а',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5480, 49.6400],
+        materials: ['paper', 'metal'],
+        materialLabels: ['📄 Макулатура', '🔩 Металл'],
+        icon: '♻️'
+    },
+    {
+        name: 'Акрон Холдинг',
+        address: 'ул. Ломоносова, 5/3',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5680, 49.6500],
+        materials: ['metal'],
+        materialLabels: ['🔩 Металлолом'],
+        icon: '🔩'
+    },
+    {
+        name: 'Акрон Холдинг',
+        address: 'ул. Красной Звезды, 17/6',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5810, 49.6100],
+        materials: ['metal'],
+        materialLabels: ['🔩 Металлолом'],
+        icon: '🔩'
+    },
+    {
+        name: 'Акрон Холдинг',
+        address: 'ул. Блюхера, 1',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5750, 49.6000],
+        materials: ['metal'],
+        materialLabels: ['🔩 Металлолом'],
+        icon: '🔩'
+    },
+    {
+        name: 'Союзвтормет',
+        address: 'ул. Солнечная, 11г',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5600, 49.6500],
+        materials: ['metal'],
+        materialLabels: ['🔩 Металл (чёрный и цветной)'],
+        icon: '🔩'
+    },
+    {
+        name: 'Вятская металлоломная компания',
+        address: 'Луганская ул., 49/6',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5480, 49.6410],
+        materials: ['metal'],
+        materialLabels: ['🔩 Металлолом'],
+        icon: '🔩'
+    },
+    {
+        name: 'Металл043',
+        address: 'ул. Кольцова, 5Г/4',
+        hours: 'Пн–Пт 8:00–17:00',
+        coords: [58.5650, 49.5700],
+        materials: ['metal'],
+        materialLabels: ['🔩 Металлолом'],
+        icon: '🔩'
+    }
+];
+
+// Инициализация карты
+let recycleMap;
+let recycleMarkers = [];
+let activeFilters = new Set(['all']);
+
+function initRecycleMap() {
+    recycleMap = L.map('recycleMap', {
+        center: [58.5830, 49.6350],
+        zoom: 12,
+        zoomControl: true,
+        scrollWheelZoom: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap',
+        maxZoom: 19
+    }).addTo(recycleMap);
+
+    renderRecycleMarkers();
+}
+
+// Определение основного типа для иконки маркера
+function getMarkerClass(point) {
+    if (point.materials.length >= 4) return 'multi';
+    if (point.materials.length === 1) return point.materials[0];
+    // Если 2-3 материала — берём первый
+    return point.materials[0];
+}
+
+// Создание кастомной иконки
+function createMarkerIcon(point) {
+    const cls = getMarkerClass(point);
+    return L.divIcon({
+        className: '',
+        html: '<div class="custom-marker ' + cls + '"><span>' + point.icon + '</span></div>',
+        iconSize: [28, 28],
+        iconAnchor: [14, 28],
+        popupAnchor: [0, -28]
+    });
+}
+
+// Создание popup
+function createPopupContent(point) {
+    const materialsHtml = point.materialLabels.map(function(m) {
+        return '<span class="popup-material">' + m + '</span>';
+    }).join('');
+
+    return '<div class="popup-title">' + point.name + '</div>' +
+           '<div class="popup-address">📍 ' + point.address + '</div>' +
+           '<div class="popup-materials">' + materialsHtml + '</div>' +
+           '<div class="popup-hours">🕐 ' + point.hours + '</div>';
+}
+
+// Отрисовка маркеров по фильтру
+function renderRecycleMarkers() {
+    // Удаляем старые маркеры
+    recycleMarkers.forEach(m => recycleMap.removeLayer(m));
+    recycleMarkers = [];
+
+    const showAll = activeFilters.has('all');
+    const specificFilters = ['paper', 'plastic', 'glass', 'blister', 'metal']
+        .filter(f => activeFilters.has(f));
+
+    recyclePoints.forEach(point => {
+        let show = false;
+        if (showAll) {
+            show = true;
+        } else if (specificFilters.length > 0) {
+            show = point.materials.some(m => specificFilters.includes(m));
+        }
+
+        if (show) {
+            const marker = L.marker(point.coords, {
+                icon: createMarkerIcon(point)
+            });
+            marker.bindPopup(createPopupContent(point), {
+                className: 'recycle-popup',
+                maxWidth: 280
+            });
+            marker.addTo(recycleMap);
+            recycleMarkers.push(marker);
+        }
+    });
+}
+
+// Обработка фильтров
+function setupRecycleFilters() {
+    const chips = document.querySelectorAll('.filter-chip');
+
+    chips.forEach(chip => {
+        const checkbox = chip.querySelector('input');
+        const filter = chip.dataset.filter;
+
+        chip.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (filter === 'all') {
+                // Чекбокс «Все»
+                if (activeFilters.has('all')) {
+                    activeFilters.delete('all');
+                    chip.classList.remove('active');
+                    checkbox.checked = false;
+                } else {
+                    activeFilters.clear();
+                    activeFilters.add('all');
+                    chips.forEach(c => {
+                        if (c.dataset.filter === 'all') {
+                            c.classList.add('active');
+                            c.querySelector('input').checked = true;
+                        } else {
+                            c.classList.remove('active');
+                            c.classList.remove('disabled');
+                            c.querySelector('input').checked = false;
+                        }
+                    });
+                }
+            } else {
+                // Снимаем «Все»
+                activeFilters.delete('all');
+                const allChip = document.querySelector('.filter-chip[data-filter="all"]');
+                allChip.classList.remove('active');
+                allChip.querySelector('input').checked = false;
+
+                if (activeFilters.has(filter)) {
+                    activeFilters.delete(filter);
+                    chip.classList.remove('active');
+                    checkbox.checked = false;
+                } else {
+                    activeFilters.add(filter);
+                    chip.classList.add('active');
+                    checkbox.checked = true;
+                }
+
+                // Если ничего не выбрано — включаем «Все»
+                let hasSpecific = ['paper', 'plastic', 'glass', 'blister', 'metal']
+                    .some(f => activeFilters.has(f));
+                if (!hasSpecific) {
+                    activeFilters.add('all');
+                    allChip.classList.add('active');
+                    allChip.querySelector('input').checked = true;
+                }
+            }
+
+            renderRecycleMarkers();
+        });
+    });
+}
+
+// Запуск после загрузки
+document.addEventListener('DOMContentLoaded', function() {
+    // Небольшая задержка, чтобы Leaflet успел загрузиться
+    setTimeout(function() {
+        if (typeof L !== 'undefined') {
+            initRecycleMap();
+            setupRecycleFilters();
+        } else {
+            // Если Leaflet ещё грузится — ждём
+            const checkL = setInterval(function() {
+                if (typeof L !== 'undefined') {
+                    clearInterval(checkL);
+                    initRecycleMap();
+                    setupRecycleFilters();
+                }
+            }, 100);
+        }
+    }, 300);
+});
+</script>
+
+
+
+
+        <!-- ===== БЛОК ОБ АВТОРЕ ===== -->
+        <div class="author-block" id="author">
+            <div class="info">
+                <h3> Иван Вахрушев</h3>
+                <p>
+                    Я основатель этого сайта и искренне люблю экологию. Моя миссия — помочь людям внедрить 
+                    осознанные привычки в повседневную жизнь. У меня есть сообщество ВКонтакте, где можно поделиться 
+                    полезными материалами и новостями.
+                </p>
+                <a href="https://vk.ru/green_linia" target="_blank" class="vk-link">
+                    <span></span> Подписаться в ВКонтакте
+                </a>
+            </div>
+            <div class="avatar">
+                🌱
+            </div>
+        </div>
+
+        <!-- ===== ФУТЕР ===== -->
+        <footer class="footer">
+            <div>🌱 EcoLife — платформа экологических привычек</div>
+            <div>
+                <a href="#">О проекте</a>
+                <a href="#author">Об авторе</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ===== МОДАЛКА СОЗДАНИЯ ПОСТА ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3>✍️ Создать пост</h3>
+            <p class="desc">
+                Расскажите свой эко-лайфхак, поделитесь историей или опишите, как вы внедрили экологию в свою жизнь.
+                Ваш пост появится в разделе «Лайфхаки и истории»!
+            </p>
+            <textarea id="postText" placeholder="Например: Я перестал покупать воду в пластиковых бутылках и теперь использую многоразовую..."></textarea>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="closeModalBtn">Отмена</button>
+                <button class="btn-submit" id="submitPostBtn">Опубликовать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. РЕАЛЬНЫЙ СЧЁТЧИК ОНЛАЙН
+        // ============================================================
+        let onlineUsers = Math.floor(Math.random() * 5) + 1;
+        const onlineElement = document.getElementById('onlineCount');
+        onlineElement.textContent = onlineUsers;
+
+        setInterval(() => {
+            let change = Math.random() > 0.5 ? 1 : -1;
+            let newCount = onlineUsers + change;
+            if (newCount < 1) newCount = 1;
+            if (newCount > 8) newCount = 8;
+            onlineUsers = newCount;
+            onlineElement.textContent = onlineUsers;
+            onlineElement.parentElement.style.transition = 'all 0.2s ease';
+            onlineElement.parentElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                onlineElement.parentElement.style.transform = 'scale(1)';
+            }, 200);
+        }, 30000);
+
+        // ============================================================
+        // 2. ДАННЫЕ: ЛАЙФХАКИ И СООБЩЕНИЯ
+        // ============================================================
+        let lifes = [];
+        let messages = [];
+        const lifesContainer = document.getElementById('lifesContainer');
+        const lifesCount = document.getElementById('lifesCount');
+        const chatContainer = document.getElementById('chatMessages');
+
+        // ============================================================
+        // 3. РЕНДЕРИНГ
+        // ============================================================
+        function renderLifes() {
+            if (lifes.length === 0) {
+                lifesContainer.innerHTML = `
+                    <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 12px;">🌿</div>
+                        <h3 style="color: #1a4f28; margin-bottom: 6px;">Пока нет лайфхаков</h3>
+                        <p style="color: #5d7a66;">Нажмите «Создать пост» и поделитесь своим опытом!</p>
+                    </div>
+                `;
+                lifesCount.textContent = '0';
+                return;
+            }
+            const sorted = [...lifes].reverse();
+            lifesContainer.innerHTML = sorted.map((item, index) => `
+                <div class="card" style="animation: fadeIn 0.5s ease ${index * 0.08}s both;">
+                    <span class="tag">${item.tag || '🌱 Совет'}</span>
+                    <h3>${item.title}</h3>
+                    <p>${item.text}</p>
+                    <div class="meta">
+                        <span>👤 ${item.author || 'Аноним'}</span>
+                        <span>+${item.likes || 0}</span>
+                    </div>
+                </div>
+            `).join('');
+            lifesCount.textContent = lifes.length;
+        }
+
+        function renderChat() {
+            if (messages.length === 0) {
+                chatContainer.innerHTML = `
+                    <div class="empty-state">
+                        <span class="emoji-big">🌱</span>
+                        <h3>Пока здесь пусто</h3>
+                        <p>Оставьте свою историю или эко-лайфхак первым! Вдохновите сообщество.</p>
+                    </div>
+                `;
+                return;
+            }
+            const recent = messages.slice(-5).reverse();
+            chatContainer.innerHTML = recent.map(msg => `
+                <div class="message" style="animation: fadeIn 0.4s ease;">
+                    <strong>${msg.author || 'Аноним'}</strong> 
+                    <span class="time">${msg.time || 'только что'}</span>
+                    <p>${msg.text}</p>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // 4. ДОБАВЛЕНИЕ ПОСТОВ И СООБЩЕНИЙ
+        // ============================================================
+        function addPost(text) {
+            if (!text.trim()) return;
+            const trimmed = text.trim();
+            lifes.push({
+                title: trimmed.slice(0, 60) + (trimmed.length > 60 ? '...' : ''),
+                text: trimmed,
+                tag: '🌱 Новый пост',
+                author: 'Вы',
+                likes: Math.floor(Math.random() * 5)
+            });
+            renderLifes();
+            // Добавляем сообщение в чат
+            messages.push({
+                author: 'Вы',
+                text: `📌 Новый пост: "${trimmed.slice(0, 50)}${trimmed.length > 50 ? '...' : ''}"`,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+            renderChat();
+        }
+
+        function addMessage(text) {
+            if (!text.trim()) return;
+            const trimmed = text.trim();
+            messages.push({
+                author: 'Вы',
+                text: trimmed,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+            renderChat();
+            document.getElementById('chatInput').value = '';
+        }
+
+        // ============================================================
+        // 5. ОБРАБОТЧИКИ
+        // ============================================================
+        // Отправка из чата
+        document.getElementById('sendBtn').addEventListener('click', () => {
+            const input = document.getElementById('chatInput');
+            addMessage(input.value);
+        });
+        document.getElementById('chatInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('chatInput');
+                addMessage(input.value);
+            }
+        });
+
+        // Модалка
+        const modalOverlay = document.getElementById('modalOverlay');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const submitPostBtn = document.getElementById('submitPostBtn');
+        const postText = document.getElementById('postText');
+
+        openModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            postText.value = '';
+            postText.focus();
+        });
+        closeModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+        });
+        submitPostBtn.addEventListener('click', () => {
+            if (postText.value.trim()) {
+                addPost(postText.value);
+                modalOverlay.classList.remove('active');
+            } else {
+                postText.style.borderColor = '#e74c3c';
+                setTimeout(() => postText.style.borderColor = '', 1500);
+            }
+        });
+        postText.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                submitPostBtn.click(); 
+            }
+        });
+
+        // ============================================================
+        // 6. СТАРТОВЫЕ ДАННЫЕ
+        // ============================================================
+        lifes.push({
+            title: 'Добро пожаловать в EcoLife!',
+            text: 'Поделитесь своим эко-советом или историей — и она появится здесь. Вместе сделаем мир чище! 🌍',
+            tag: '🌱 Старт',
+            author: 'Иван Вахрушев (основатель этой платформы)',
+            likes: 3
+        });
+
+        messages.push({
+            author: 'Иван Вахрушев (основатель)',
+            text: 'Приветствую! Этот сайт создан для обмена экологическими привычками. Делитесь опытом, вдохновляйте друг друга! 🌿',
+            time: 'только что'  
+        });
+
+        renderLifes();
+        renderChat();
+        
+        // ============================================================
+        // 7. АНИМАЦИЯ ПОЯВЛЕНИЯ (Intersection Observer)
+        // ============================================================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.05 });
+
+        document.querySelectorAll('.card, .chat-section, .promo-block, .author-block, .create-post-wrapper').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px)';
+            el.style.transition = 'all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            observer.observe(el);
+        });
+
+        console.log('🌱 EcoLife от Ивана Вахрушева запущен!');
+    </script>
+<script>
+// Функция для добавления копирайта в футер
+function addCopyright() {
+    const footer = document.querySelector('footer');
+    
+    // Создаем новый элемент для копирайта
+    const copyright = document.createElement('div');
+    copyright.classList.add('copyright');
+    
+    // Получаем текущий год
+    const currentYear = new Date().getFullYear();
+    
+    // Устанавливаем текст копирайта с динамическим годом
+    copyright.innerHTML = `© Вахрушев И.Г. ${currentYear}`;
+    
+    // Добавляем копирайт в футер
+    footer.appendChild(copyright);
+}
+
+// Добавляем базовые стили для копирайта
+const style = document.createElement('style');
+style.innerHTML = `
+.copyright {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #4d6b56;
+    text-align: center;
+}
+`;
+document.head.appendChild(style);
+
+// Вызываем функцию при загрузке документа
+document.addEventListener('DOMContentLoaded', () => {
+    addCopyright();
+});
+</script>
+<script>
+// Функция для блокировки свайпа
+document.addEventListener('DOMContentLoaded', () => {
+    let startX;
+    let startY;
+    let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    // Проверяем, мобильное ли устройство
+    if (isMobile) {
+        document.body.addEventListener('touchstart', startTouch);
+        document.body.addEventListener('touchend', endTouch);
+        document.body.addEventListener('touchmove', moveTouch);
+    }
+
+    function startTouch(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }
+
+    function moveTouch(e) {
+        if (!startX || !startY) return;
+        
+        let currentX = e.touches[0].clientX;
+        let currentY = e.touches[0].clientY;
+        
+        // Блокируем горизонтальный свайп
+        if (Math.abs(currentX - startX) > 10) {
+            e.preventDefault();
+        }
+        
+        // Блокируем вертикальный свайп
+        if (Math.abs(currentY - startY) > 10) {
+            e.preventDefault();
+        }
+    }
+
+    function endTouch() {
+        startX = null;
+        startY = null;
+    }
+});
+</script>
+<script>
+// Функция для создания кнопки возврата наверх
+function createBackToTopButton() {
+    const backToTop = document.createElement('button');
+    backToTop.classList.add('back-to-top');
+    backToTop.textContent = '▲';
+    
+    // Добавляем градиентный бордер
+    backToTop.style.border = '2px solid transparent';
+    backToTop.style.borderImage = 'linear-gradient(90deg, blue, magenta, mediumblue) 1';
+    backToTop.style.borderImageSlice = '1';
+    
+    // Анимация появления
+    backToTop.style.opacity = '0';
+    backToTop.style.transition = 'opacity 0.3s, transform 0.3s';
+    
+    // Добавляем стили для кнопки
+    backToTop.style.cssText = `
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        padding: 15px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.8);
+        color: #1a4f28;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+    `;
+    
+    // Функция для плавного скролла
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Обработчик для об авторе
+    function scrollToAuthor() {
+        const authorSection = document.querySelector('#author');
+        if (authorSection) {
+            authorSection.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    // Обработчики кликов
+    backToTop.addEventListener('click', (e) => {
+        const target = e.target.dataset.target;
+        if (target === 'author') {
+            scrollToAuthor();
+        } else {
+            scrollToTop();
+        }
+    });
+    
+    // Показываем кнопку при скролле
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+            backToTop.style.opacity = '1';
+            backToTop.style.transform = 'translateY(0)';
+        } else {
+            backToTop.style.opacity = '0';
+            backToTop.style.transform = 'translateY(20px)';
+        }
+    });
+    
+    
+
+// Анимация бордера при наведении
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const buttons = document.querySelectorAll('.back-to-top');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.borderWidth = '4px';
+                button.style.transform = 'scale(1.1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.borderWidth = '2px';
+                button.style.transform = 'scale(1)';
+            });
+        });
+    }, 100);  
+});
+
+// Запускаем создание кнопки
+createBackToTopButton();
+</script>
+<script>
+
+</script>
+
+</body>
+</html>
